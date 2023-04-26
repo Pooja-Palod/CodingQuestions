@@ -21,7 +21,7 @@ class Interval:
         self.start = start
         self.end = end
 """
-
+#solution1 heap
 class Solution:
     def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
         heap=[]
@@ -43,4 +43,55 @@ class Solution:
             prev_end=max(prev_end,interval.end)
             
         return res
+    
+    #solution 2 sweep line
+    
+     START, END = 1, -1
+        events = []
+        
+        for employee in schedule:
+            for busyPeriod in employee:
+                events.append([busyPeriod.start, START])
+                events.append([busyPeriod.end, END])
+        
+        events.sort()
+        balance = 0
+        result = []
+        prev = None
+        
+        for time, eventType in events:
+            if balance == 0 and prev and prev != time:
+                result.append(Interval(prev, time))
+            
+            balance += eventType
+            
+            if balance == 0:
+                prev = time
+                
+        return result
+    
+    #solution 3 merge intervals 
+    
+    class Solution:
+    def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
+        ints = []
+        for i in schedule:
+            [ints.append(x) for x in i]
+    
+        ints.sort(key = lambda x:x.start)
+        merged=[]
+        for i in ints:
+            if not merged or i.start > merged[-1].end:
+                merged.append(i)
+            else:
+                merged[-1].end = max(i.end, merged[-1].end)
+
+      
+        free = []
+        for i in range(1, len(merged)):
+            free.append(Interval(start=merged[i-1].end, end=merged[i].start))
+			
+		
+        return free
+    
                 
