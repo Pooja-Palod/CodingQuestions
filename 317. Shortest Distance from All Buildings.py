@@ -1,6 +1,6 @@
-317. Shortest Distance from All Buildings
+'''317. Shortest Distance from All Buildings
 
-'''You are given an m x n grid grid of values 0, 1, or 2, where:
+You are given an m x n grid grid of values 0, 1, or 2, where:
 
 each 0 marks an empty land that you can pass by freely,
 each 1 marks a building that you cannot pass through, and
