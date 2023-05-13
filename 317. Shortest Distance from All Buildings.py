@@ -75,6 +75,45 @@ class Solution:
                            
                 
         return mindist if mindist!=float('inf') else -1
+    
+    
+   #solution2 
+
+   class Solution:
+    def shortestDistance(self, grid: List[List[int]]) -> int:
+        if not grid or not grid[0]:
+            return -1
+        m, n, buildings = len(grid), len(grid[0]), sum(val for line in grid for val in line if val == 1)
+        hit, dist_sum = [[0]*n for i in range(m)], [[0]*n for i in range(m)]
+        directions=[[1,0],[-1,0],[0,-1],[0,1]]
+        def bfs(startx,starty):
+            visit=[[False for j in range(n)] for i in range(m)]
+            queue=deque([(startx,starty,0)])
+            count=1
+            visit[startx][starty]=True
+            while queue:
+                x,y,dist=queue.popleft()
+                for dx,dy in directions:
+                    newx=x+dx
+                    newy=y+dy
+                    if 0<=newx<m and 0<=newy<n and not visit[newx][newy] :
+                        visit[newx][newy]=True
+                        if grid[newx][newy]==0:
+                            dist_sum[newx][newy]+=(dist+1)
+                            hit[newx][newy]+=1
+                            queue.append((newx,newy,dist+1))
+                        if grid[newx][newy]==1:
+                            count+=1
+            return count==buildings
+        
+        for i in range(m):
+                for j in range(n):
+                    if grid[i][j]==1:
+                        if not bfs(i,j):
+                            return -1
+         
+        print(dist_sum)
+        return min([dist_sum[i][j] for i in range(m) for j in range(n) if not grid[i][j] and hit[i][j]==buildings] or [-1])
                 
         
  
