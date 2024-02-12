@@ -15,6 +15,7 @@ Input: s = "aa", k = 1
 Output: 2
 Explanation: The substring is "aa" with length 2.'''
 
+#sol1
 class Solution:
     def lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:
         l=0
@@ -29,3 +30,22 @@ class Solution:
                 l+=1
             ans=max(ans,r-l+1)
         return ans
+
+
+#sol2
+ def lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:
+        max_size = 0
+        counter = Counter()
+        
+        for right in range(len(s)):
+            counter[s[right]] += 1
+            
+            if len(counter) <= k:
+                max_size += 1
+            else:
+                counter[s[right - max_size]] -= 1
+                if counter[s[right - max_size]] == 0:
+                    del counter[s[right - max_size]]
+                    
+        return max_size
+        
