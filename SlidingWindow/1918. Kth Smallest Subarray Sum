@@ -1,0 +1,44 @@
+https://leetcode.com/problems/kth-smallest-subarray-sum/
+'''Given an integer array nums of length n and an integer k, return the kth smallest subarray sum.
+
+A subarray is defined as a non-empty contiguous sequence of elements in an array. A subarray sum is the sum of all elements in the subarray.
+
+ 
+
+Example 1:
+
+Input: nums = [2,1,3], k = 4
+Output: 3
+Explanation: The subarrays of [2,1,3] are:
+- [2] with sum 2
+- [1] with sum 1
+- [3] with sum 3
+- [2,1] with sum 3
+- [1,3] with sum 4
+- [2,1,3] with sum 6 
+Ordering the sums from smallest to largest gives 1, 2, 3, 3, 4, 6. The 4th smallest is 3.'''
+
+
+class Solution:
+    def kthSmallestSubarraySum(self, nums: List[int], k: int) -> int:
+        
+        def cnt_subarray_with_sum_less_than_x(x):
+            l=0
+            curr_sum,cnt=0,0
+            for r in range(len(nums)):
+                curr_sum+=nums[r]
+                while curr_sum>x:
+                    curr_sum-=nums[l]
+                    l+=1
+                cnt+=(r-l+1)
+            return cnt
+        
+        low=min(nums)
+        high=sum(nums)
+        while low<=high:
+            mid=(low+high)//2
+            if k<=cnt_subarray_with_sum_less_than_x(mid):
+                high=mid-1
+            else:
+                low=mid+1
+        return low
