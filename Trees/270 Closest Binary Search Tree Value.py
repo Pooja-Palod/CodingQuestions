@@ -22,7 +22,8 @@ class Solution:
             if abs(node.val-target)<=diff:
                 diff=abs(node.val-target)
                 ans=node.val
-                print(diff,ans)
+            elif  abs(node.val-target)==diff:
+                ans=min(ans,node.val)
             dfs(node.left)
             dfs(node.right)
             
@@ -63,6 +64,7 @@ class Solution:
 
 #Approach 4 Binary search
 
+#thus wont work if we have multiple ans for example for 4.5 we have 4 and 5 as ans
 class Solution:
     def closestValue(self, root: TreeNode, target: float) -> int:
         closest = root.val
@@ -70,3 +72,21 @@ class Solution:
             closest = min(root.val, closest, key = lambda x: abs(target - x))
             root = root.left if target < root.val else root.right
         return closest
+
+#corrected solution
+class Solution:
+    def closestValue(self, root: Optional[TreeNode], target: float) -> int:
+        
+        minval = root.val
+        while root:
+            if abs(root.val - target) < abs(minval - target):
+                minval = root.val
+            elif abs(root.val - target) == abs(minval - target):
+                minval = min(root.val, minval)
+                
+            if root.val < target:
+                root = root.right
+            else:
+                root = root.left
+        
+        return minval
